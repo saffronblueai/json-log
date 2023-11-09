@@ -1,0 +1,9 @@
+[flake8]
+max-line-length = 120
+exclude =
+    \.git
+    \.mypy_cache
+    \.venv
+ignore = E501, W503, E203
+max-complexity = 18
+select = B,C,E,F,W,T4,B9

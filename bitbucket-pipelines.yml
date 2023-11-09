@@ -1,0 +1,36 @@
+image: python:3.8
+definitions:
+  steps:
+    - step:
+        name: Install dependencies
+        script:
+          - &install |
+            python3 -m venv venv
+            venv/bin/python -m pip install --upgrade pip setuptools wheel
+            venv/bin/python -m pip install -r requirements-dev.txt
+    - step:
+        name: Run tests
+        script:
+          - &test |
+            venv/bin/python -m pytest jsonlog 
+pipelines:
+  pull-requests:
+    "**":
+      - step:
+          caches:
+            - pip
+          deployment: Testing 
+          name: Preview changes on pull requests
+          script:
+            - *install
+            - *test
+  branches:
+    "develop":
+      - step:
+          caches:
+            - pip
+          name: test development
+          deployment: Testing 
+          script:
+            - *install
+            - *test
